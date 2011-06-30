@@ -1,0 +1,58 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>JSONLint Fork</title>
+  <meta name="description" content="http://zaach.github.com/jsonlint/">
+  <link rel="stylesheet" href="web/style.css">
+</head>
+<body>
+  <div id="container">
+    <header></header>
+    <div id="main" role="main">
+	  <h1>JSON Lint</h1> 
+	  <p>A pure JavaScript version of the service provided at <a href="http://jsonlint.com/">jsonlint.com</a>.</p>
+	  <textarea id="source" rows="20" cols="50">
+
+	  </textarea>
+	  <p>
+	    <button id="button">Validate</button>
+	    <input type="checkbox" value="yes" id="reformat" /><label for="reformat">reformat JSON</label>
+	  </p>
+	  <h2>Results</h2>
+	  <pre id="result"></pre>
+	  <p><a href="http://github.com/zaach/jsonlint">project on github</a></p>
+    </div>
+    <footer></footer>
+  </div> <!--! end of #container -->
+  <!-- JavaScript at the bottom for fast page loading -->
+  <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+  <script src="web/json2.js"></script>
+  <script src="web/jsonlint.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="web/jquery-1.6.1.min.js"><\/script>')</script>
+  <script type="text/javascript" charset="utf-8">
+$('#button').click(function(){
+	try {
+		var sourceTextArea = $("#source");
+		var result = jsonlint.parse(sourceTextArea.val());
+		var resultBox = $("#result");
+		var reformatCheckBox = $('#reformat');
+		if(result) {
+			resultBox.text('JSON is valid!')
+						.removeClass('fail')
+						.addClass('pass');
+			if(reformatCheckBox.prop('checked')) {
+				sourceTextArea.val(JSON.stringify(result, null, "  "));
+			}
+		}
+	} catch(e) {
+		resultBox.text(e)
+			.removeClass('pass')
+			.addClass('fail');
+	}
+});
+  </script>
+</body>
+</html>
