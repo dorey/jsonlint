@@ -1,20 +1,23 @@
+%start JSONText
 
 /*
   ECMA-262 5th Edition, 15.12.1 The JSON Grammar.
-  Modified to forbid top level primitives.
 */
 
-
-/* author: Zach Carter */
-
-
-%start JSONText
 
 %%
 
 JSONString
     : STRING
-        {$$ = yytext;}
+        { // replace escaped characters with actual character
+          $$ = yytext.replace(/\\(\\|")/g, "$"+"1")
+                     .replace(/\\n/g,'\n')
+                     .replace(/\\r/g,'\r')
+                     .replace(/\\t/g,'\t')
+                     .replace(/\\v/g,'\v')
+                     .replace(/\\f/g,'\f')
+                     .replace(/\\b/g,'\b');
+        }
     ;
 
 JSONNumber
